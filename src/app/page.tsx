@@ -8,7 +8,7 @@ export default function Home() {
         <Group justify='center' style={{ width: '100%' }}>
           <Stack align='center'>
             <Title>8Sentimentals</Title>
-            <Button variant='filled' color='black' component='a' href='survey'>
+            <Button variant='filled' color='black' component='a' href='instructions'>
               Get Started
             </Button>
           </Stack>
