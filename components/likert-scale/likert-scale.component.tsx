@@ -1,12 +1,9 @@
-import { Group, Radio, RadioGroup, Text } from '@mantine/core';
+import { Divider, Group, Radio, RadioGroup, Text } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
+import { SurveyForm, SurveyQuestion, SurveyResponse } from '../../interfaces';
 
 export default function LikertScale(props: Props) {
-  const { form, currentQuestionId } = props;
-
-  const responseIdx = form.values.responses.findIndex(
-    (response) => response.qId === currentQuestionId
-  );
+  const { form, question } = props;
 
   const options = [
     { value: '1', label: 'Strongly Disagree' },
@@ -18,7 +15,29 @@ export default function LikertScale(props: Props) {
 
   return (
     <>
-      <RadioGroup value={form.values.responses[responseIdx]?.answer || '3'}>
+      <Group justify='space-between' w='100%' wrap='nowrap'>
+        <Text size={'md'} fw={700}>
+          {question.disagree}
+        </Text>
+        <Divider color='black' orientation='horizontal' w='100%' />
+        <Text size={'md'} fw={700}>
+          {question.agree}
+        </Text>
+      </Group>
+
+      <RadioGroup
+        value={form.values.responses[form.values.currentQuestionIdx]?.answer}
+        onChange={(value) => {
+          const response: SurveyResponse = {
+            qId: question.id,
+            answer: value,
+          };
+          form.setFieldValue(
+            `responses.${form.values.currentQuestionIdx}`,
+            response
+          );
+        }}
+      >
         <Group>
           {options.map((option) => (
             <Radio
@@ -26,13 +45,7 @@ export default function LikertScale(props: Props) {
               key={option.value}
               value={option.value}
               label={
-                <Text
-                  size={'xl'}
-                  fw={700}
-                  style={{
-                    body: {},
-                  }}
-                >
+                <Text size={'md'} fw={700}>
                   {option.label}
                 </Text>
               }
@@ -46,5 +59,5 @@ export default function LikertScale(props: Props) {
 
 interface Props {
   form: UseFormReturnType<SurveyForm, (values: SurveyForm) => SurveyForm>;
-  currentQuestionId: number;
+  question: SurveyQuestion;
 }
