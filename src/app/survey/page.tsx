@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react';
 import LikertScale from '../../../components/likert-scale/likert-scale.component';
 import ProgressBar from '../../../components/progress-bar/progress-bar.component';
 import YellowContainer from '../../../components/yellow-container/yellow-container.component';
+import { useSurvey } from '../../../contexts/survey.context';
 import { SurveyQuestionsData } from '../../../data/survey-questions';
 import { SurveyForm, SurveyQuestion } from '../../../interfaces';
 
 export default function Survey() {
-  const [active, setActive] = useState(0);
   const [randomizedSurveyQuestions, setRandomizedSurveyQuestions] = useState<
     SurveyQuestion[]
   >([]);
@@ -19,6 +19,8 @@ export default function Survey() {
       responses: [],
     },
   });
+
+  const { survey, setSurvey, isLoading } = useSurvey();
 
   useEffect(() => {
     // Get randomized survey questions
@@ -33,17 +35,17 @@ export default function Survey() {
       setRandomizedSurveyQuestions(randomized);
       localStorage.setItem('randomizedState', JSON.stringify(randomized));
     }
-
-    // Get survey answers
-    const surveyState = JSON.parse(localStorage.getItem('surveyState') || '{}');
-
-    if (surveyState?.responses?.length > 0) {
-      form.setValues(surveyState);
-    }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('surveyState', JSON.stringify(form.values));
+    // Get form data from local storage using survey context
+    if (!isLoading && survey?.responses && survey?.responses.length > 0) {
+      form.setValues(survey);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    setSurvey(form.values);
   }, [form.values.responses]);
 
   return (
