@@ -41,13 +41,20 @@ export default function Survey() {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          py={'10%'}
+          px='xl'
         >
-          <Stack>
+          <Stack
+            style={{
+              maxWidth: '50rem',
+            }}
+          >
             {randomizedSurveyQuestions.length > 0 && (
-              <Stack w='100%' align='center' px='xl'>
+              <Stack w='100%' align='center'>
                 <Title order={2} pb='xl'>
-                  {randomizedSurveyQuestions[0].question}
+                  {
+                    randomizedSurveyQuestions[form.values.currentQuestionIdx]
+                      .question
+                  }
                 </Title>
                 <LikertScale
                   form={form}
@@ -57,11 +64,44 @@ export default function Survey() {
                 />
               </Stack>
             )}
-            <Button color='black'>Next question</Button>
+            <Stack justify='center' align='center' gap={5}>
+              <Button
+                color='black'
+                mt='xl'
+                w='20rem'
+                onClick={() => {
+                  form.setFieldValue(
+                    'currentQuestionIdx',
+                    form.values.currentQuestionIdx + 1
+                  );
+                }}
+                disabled={
+                  form.values.responses[form.values.currentQuestionIdx] ===
+                  undefined
+                }
+              >
+                Next question
+              </Button>
+              <Button
+                variant='subtle'
+                color='black'
+                w='5rem'
+                size='xs'
+                onClick={() => {
+                  form.setFieldValue(
+                    'currentQuestionIdx',
+                    form.values.currentQuestionIdx + 1
+                  );
+                }}
+                disabled={form.values.currentQuestionIdx === 0}
+              >
+                Back
+              </Button>
+            </Stack>
           </Stack>
         </Paper>
 
-        <ProgressBar active={active} setActive={setActive} />
+        <ProgressBar active={form.values.currentQuestionIdx} />
       </Stack>
     </YellowContainer>
   );
