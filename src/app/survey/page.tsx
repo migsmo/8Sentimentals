@@ -21,11 +21,30 @@ export default function Survey() {
   });
 
   useEffect(() => {
-    const randomized = SurveyQuestionsData.sort(() => Math.random() - 0.5);
-    setRandomizedSurveyQuestions(randomized);
+    // Get randomized survey questions
+    const randomizedState = JSON.parse(
+      localStorage.getItem('randomizedState') || '[]'
+    );
+
+    if (randomizedState.length > 0) {
+      setRandomizedSurveyQuestions(randomizedState);
+    } else {
+      const randomized = SurveyQuestionsData.sort(() => Math.random() - 0.5);
+      setRandomizedSurveyQuestions(randomized);
+      localStorage.setItem('randomizedState', JSON.stringify(randomized));
+    }
+
+    // Get survey answers
+    const surveyState = JSON.parse(localStorage.getItem('surveyState') || '{}');
+
+    if (surveyState?.responses?.length > 0) {
+      form.setValues(surveyState);
+    }
   }, []);
 
-  console.log(form.values);
+  useEffect(() => {
+    localStorage.setItem('surveyState', JSON.stringify(form.values));
+  }, [form.values.responses]);
 
   return (
     <YellowContainer alignItems='flex-start' justifyContent='flex-start'>
@@ -70,17 +89,22 @@ export default function Survey() {
                 mt='xl'
                 w='20rem'
                 onClick={() => {
-                  form.setFieldValue(
-                    'currentQuestionIdx',
-                    form.values.currentQuestionIdx + 1
-                  );
+                  if (
+                    form.values.currentQuestionIdx <
+                    SurveyQuestionsData.length - 1
+                  ) {
+                    form.setFieldValue(
+                      'currentQuestionIdx',
+                      form.values.currentQuestionIdx + 1
+                    );
+                  }
                 }}
                 disabled={
                   form.values.responses[form.values.currentQuestionIdx] ===
                   undefined
                 }
               >
-                Next question
+                Next
               </Button>
               <Button
                 variant='subtle'
@@ -90,7 +114,7 @@ export default function Survey() {
                 onClick={() => {
                   form.setFieldValue(
                     'currentQuestionIdx',
-                    form.values.currentQuestionIdx + 1
+                    form.values.currentQuestionIdx - 1
                   );
                 }}
                 disabled={form.values.currentQuestionIdx === 0}
