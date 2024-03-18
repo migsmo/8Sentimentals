@@ -28,7 +28,7 @@ export default function Survey() {
       localStorage.getItem('randomizedState') || '[]'
     );
 
-    if (randomizedState.length > 0) {
+    if (randomizedState?.length > 0) {
       setRandomizedSurveyQuestions(randomizedState);
     } else {
       const randomized = SurveyQuestionsData.sort(() => Math.random() - 0.5);
@@ -99,6 +99,8 @@ export default function Survey() {
                       'currentQuestionIdx',
                       form.values.currentQuestionIdx + 1
                     );
+                  } else {
+                    // TODO move to analysis page
                   }
                 }}
                 disabled={
