@@ -26,7 +26,9 @@ export default function LikertScale(props: Props) {
       </Group>
 
       <RadioGroup
-        value={form.values.responses[form.values.currentQuestionIdx]?.answer}
+        value={
+          form.values.responses[form.values.currentQuestionIdx]?.answer || '-1'
+        }
         onChange={(value) => {
           const response: SurveyResponse = {
             qId: question.id,
