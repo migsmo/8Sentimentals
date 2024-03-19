@@ -1,8 +1,8 @@
 import { Stepper, StepperProps, rem } from '@mantine/core';
+import { SurveyQuestionsData } from '../../data/survey-questions';
 
 interface Props {
   active: number;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function StyledStepper(props: StepperProps) {
@@ -34,11 +34,11 @@ function StyledStepper(props: StepperProps) {
 }
 
 export default function ProgressBar(props: Props) {
-  const { active, setActive } = props;
+  const { active } = props;
   return (
     <>
-      <StyledStepper active={active} onStepClick={setActive} size='xs'>
-        {Array.from({ length: 20 }, (_, i) => (
+      <StyledStepper active={active} allowNextStepsSelect={false} size='xs'>
+        {Array.from({ length: SurveyQuestionsData.length }, (_, i) => (
           <Stepper.Step key={i} label={`Step ${i + 1}`} />
         ))}
       </StyledStepper>

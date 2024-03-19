@@ -23,6 +23,7 @@ const YellowContainer: React.FC<Props> = ({
         display: 'flex',
         alignItems: alignItems,
         justifyContent: justifyContent,
+        overflow: 'auto',
       }}
     >
       {children}
