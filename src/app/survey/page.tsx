@@ -21,6 +21,7 @@ export default function Survey() {
   });
 
   const { survey, setSurvey, isLoading } = useSurvey();
+  const isLastQuestion = form.values.currentQuestionIdx === SurveyQuestionsData.length - 1;
 
   useEffect(() => {
     // Get randomized survey questions
@@ -52,7 +53,7 @@ export default function Survey() {
     <YellowContainer alignItems='flex-start' justifyContent='flex-start'>
       <Stack w='100%' justify='space-between' h='100%'>
         <Container fluid w='100%'>
-          <Title>Survey</Title>
+          <Title>8Sentimentals</Title>
         </Container>
 
         <Paper
@@ -86,30 +87,37 @@ export default function Survey() {
               </Stack>
             )}
             <Stack justify='center' align='center' gap={5}>
-              <Button
-                color='black'
-                mt='xl'
-                w='20rem'
-                onClick={() => {
-                  if (
-                    form.values.currentQuestionIdx <
-                    SurveyQuestionsData.length - 1
-                  ) {
+              {isLastQuestion ? (
+                <Button
+                  color='black'
+                  mt='xl'
+                  w='20rem'
+                  component='a'
+                  href='results'
+                  disabled={
+                    form.values.responses[form.values.currentQuestionIdx] === undefined
+                  }
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  color='black'
+                  mt='xl'
+                  w='20rem'
+                  onClick={() => {
                     form.setFieldValue(
                       'currentQuestionIdx',
                       form.values.currentQuestionIdx + 1
                     );
-                  } else {
-                    // TODO move to analysis page
+                  }}
+                  disabled={
+                    form.values.responses[form.values.currentQuestionIdx] === undefined
                   }
-                }}
-                disabled={
-                  form.values.responses[form.values.currentQuestionIdx] ===
-                  undefined
-                }
-              >
-                Next
-              </Button>
+                >
+                  Next
+                </Button>
+              )}
               <Button
                 variant='subtle'
                 color='black'
