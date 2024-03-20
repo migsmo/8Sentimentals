@@ -67,23 +67,36 @@ export default function Results(){
   let emotionA = '';
   let emotionB = '';
   let emotionC = '';
+  let ratioA = 0;
+  let ratioB = 0;
+  let ratioC = 0;
   let finalEmotions = ''
   let finalOutcome = '';
 
   if (emotionTally[EmotionCategory.HAPPINESS] > emotionTally[EmotionCategory.SADNESS]) {
     emotionA = 'H';
-  } else {
-    emotionA = 'S';}
+    ratioA = emotionTally[EmotionCategory.HAPPINESS] / (emotionTally[EmotionCategory.SADNESS] + emotionTally[EmotionCategory.HAPPINESS]) * 100;
+} else {
+    emotionA = 'S';
+    ratioA = emotionTally[EmotionCategory.SADNESS] / (emotionTally[EmotionCategory.HAPPINESS] + emotionTally[EmotionCategory.SADNESS]) * 100;
+}
 
-  if (emotionTally[EmotionCategory.EXCITEMENT] > emotionTally[EmotionCategory.BOREDOM]) {
+if (emotionTally[EmotionCategory.EXCITEMENT] > emotionTally[EmotionCategory.BOREDOM]) {
     emotionB = 'E';
-  } else {
-    emotionB = 'B';}
+    ratioB = emotionTally[EmotionCategory.EXCITEMENT] / (emotionTally[EmotionCategory.BOREDOM] + emotionTally[EmotionCategory.EXCITEMENT]) * 100;
+} else {
+    emotionB = 'B';
+    ratioB = emotionTally[EmotionCategory.BOREDOM] / (emotionTally[EmotionCategory.EXCITEMENT] + emotionTally[EmotionCategory.BOREDOM]) * 100;
+}
 
-  if (emotionTally[EmotionCategory.AFFECTIONATE] > emotionTally[EmotionCategory.DISTANT]) {
+if (emotionTally[EmotionCategory.AFFECTIONATE] > emotionTally[EmotionCategory.DISTANT]) {
     emotionC = 'A';
-  } else {
-    emotionC = 'D';}
+    ratioC = emotionTally[EmotionCategory.AFFECTIONATE] / (emotionTally[EmotionCategory.DISTANT] + emotionTally[EmotionCategory.AFFECTIONATE]) * 100;
+} else {
+    emotionC = 'D';
+    ratioC = emotionTally[EmotionCategory.DISTANT] / (emotionTally[EmotionCategory.AFFECTIONATE] + emotionTally[EmotionCategory.DISTANT]) * 100;
+}
+
 
   if (emotionA == 'H'){
     if (emotionB == 'E'){
@@ -139,7 +152,14 @@ export default function Results(){
       <div style={{ display: 'flex' }}>
         <Title style={{ fontSize: '10rem'}}>{finalEmotions}</Title>
       </div>
+      <div>
+        <h2>{`happiness ${ratioA.toFixed(0)}% ${100 - ratioA.toFixed(0)}% sadness`}</h2>
+        <h2>{`excitement ${ratioB.toFixed(0)}% ${100 - ratioB.toFixed(0)}% boredom`}</h2>
+        <h2>{`affectionate ${ratioC.toFixed(0)}% ${100 - ratioC.toFixed(0)}% distant`}</h2>
+      </div>
       <h1>{finalOutcome}</h1>
+      <div style={{ marginTop: '2rem' }}>
+      </div>
     </div>
   </CenterContainer>
 );
