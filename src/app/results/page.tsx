@@ -1,17 +1,28 @@
+'use client'
 import { Stack, Title } from '@mantine/core';
-import { useSurvey } from '../../../contexts/survey.context';
 import CenterContainer from '../../../components/yellow-container/yellow-container.component';
 
 export default function Results() {
-  const { survey} = useSurvey;
+  // Retrieve survey responses from localStorage
+  const surveyResponsesString = localStorage.getItem('surveyState');
+  const surveyResponses = JSON.parse(surveyResponsesString || '{}').responses;
 
-  // Access survey data and render results
+  // Format survey responses into an array with qId and answer
+  const formattedResponses = surveyResponses.map(({ qId, answer }) => ({
+    qId,
+    answer
+  }));
+
+  // Display formatted survey responses
   return (
     <CenterContainer>
       <Stack align='center'>
-        <Title>Results</Title>
-        {/* Render survey data here */}
-        <pre>{JSON.stringify(survey, null, 2)}</pre>
+        {formattedResponses.map((response, index) => (
+          <div key={index}>
+            <p>Question ID: {response.qId}</p>
+            <p>Answer: {response.answer}</p>
+          </div>
+        ))}
       </Stack>
     </CenterContainer>
   );
