@@ -3,6 +3,7 @@ import { Stack, Title } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { EmotionCategory } from '../../../enums/index';
 import { SurveyQuestion, SurveyQuestionsData } from '../../../data/survey-questions';
+import { finalOutcomes } from '../../../data/final-outcomes';
 import CenterContainer from '../../../components/yellow-container/yellow-container.component';
 
 export default function Results(){
@@ -63,16 +64,83 @@ export default function Results(){
     });
   }, [formattedResponses]);
 
-  // Display formatted survey responses
+  let emotionA = '';
+  let emotionB = '';
+  let emotionC = '';
+  let finalEmotions = ''
+  let finalOutcome = '';
+
+  if (emotionTally[EmotionCategory.HAPPINESS] > emotionTally[EmotionCategory.SADNESS]) {
+    emotionA = 'H';
+  } else {
+    emotionA = 'S';}
+
+  if (emotionTally[EmotionCategory.EXCITEMENT] > emotionTally[EmotionCategory.BOREDOM]) {
+    emotionB = 'E';
+  } else {
+    emotionB = 'B';}
+
+  if (emotionTally[EmotionCategory.AFFECTIONATE] > emotionTally[EmotionCategory.DISTANT]) {
+    emotionC = 'A';
+  } else {
+    emotionC = 'D';}
+
+  if (emotionA == 'H'){
+    if (emotionB == 'E'){
+      if (emotionC == 'A'){
+        finalOutcome = finalOutcomes[0];
+        finalEmotions = 'HEA';
+      }
+      else if (emotionC == 'D'){
+        finalOutcome = finalOutcomes[1];
+        finalEmotions = 'HED';
+      }
+    }
+    else if (emotionB == 'B'){
+      if (emotionC == 'A'){
+        finalOutcome = finalOutcomes[2];
+        finalEmotions = 'HBA';
+      }
+      else if (emotionC == 'D'){
+        finalOutcome = finalOutcomes[3];
+        finalEmotions = 'HBD';
+      }
+    }
+  }
+
+  if (emotionA == 'S'){
+    if (emotionB == 'E'){
+      if (emotionC == 'A'){
+        finalOutcome = finalOutcomes[4];
+        finalEmotions = 'SEA';
+      }
+      else if (emotionC == 'D'){
+        finalOutcome = finalOutcomes[5];
+        finalEmotions = 'SED';
+      }
+    }
+    else if (emotionB == 'B'){
+      if (emotionC == 'A'){
+        finalOutcome = finalOutcomes[6];
+        finalEmotions = 'SBA';
+      }
+      else if (emotionC == 'D'){
+        finalOutcome = finalOutcomes[7]; 
+        finalEmotions = 'SBD';
+      }
+    }
+  }
+
+
+
   return (
-    <CenterContainer>
-      <Stack align='center'>
-        {Object.entries(emotionTally).map(([emotion, count]) => (
-          <p key={emotion}>
-            {emotion}: {count}
-          </p>
-        ))}
-      </Stack>
-    </CenterContainer>
-  );
+  <CenterContainer>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+      <div style={{ display: 'flex' }}>
+        <Title style={{ fontSize: '10rem'}}>{finalEmotions}</Title>
+      </div>
+      <h1>{finalOutcome}</h1>
+    </div>
+  </CenterContainer>
+);
 }
