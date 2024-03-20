@@ -94,6 +94,7 @@ export default function Survey() {
                   w='20rem'
                   component='a'
                   href='results'
+                  
                   disabled={
                     form.values.responses[form.values.currentQuestionIdx] === undefined
                   }

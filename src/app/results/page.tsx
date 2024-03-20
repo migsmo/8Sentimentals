@@ -78,7 +78,7 @@ export default function Results(){
     ratioA = emotionTally[EmotionCategory.HAPPINESS] / (emotionTally[EmotionCategory.SADNESS] + emotionTally[EmotionCategory.HAPPINESS]) * 100;
 } else {
     emotionA = 'S';
-    ratioA = emotionTally[EmotionCategory.SADNESS] / (emotionTally[EmotionCategory.HAPPINESS] + emotionTally[EmotionCategory.SADNESS]) * 100;
+    ratioA = emotionTally[EmotionCategory.HAPPINESS] / (emotionTally[EmotionCategory.HAPPINESS] + emotionTally[EmotionCategory.SADNESS]) * 100;
 }
 
 if (emotionTally[EmotionCategory.EXCITEMENT] > emotionTally[EmotionCategory.BOREDOM]) {
@@ -86,7 +86,7 @@ if (emotionTally[EmotionCategory.EXCITEMENT] > emotionTally[EmotionCategory.BORE
     ratioB = emotionTally[EmotionCategory.EXCITEMENT] / (emotionTally[EmotionCategory.BOREDOM] + emotionTally[EmotionCategory.EXCITEMENT]) * 100;
 } else {
     emotionB = 'B';
-    ratioB = emotionTally[EmotionCategory.BOREDOM] / (emotionTally[EmotionCategory.EXCITEMENT] + emotionTally[EmotionCategory.BOREDOM]) * 100;
+    ratioB = emotionTally[EmotionCategory.EXCITEMENT] / (emotionTally[EmotionCategory.EXCITEMENT] + emotionTally[EmotionCategory.BOREDOM]) * 100;
 }
 
 if (emotionTally[EmotionCategory.AFFECTIONATE] > emotionTally[EmotionCategory.DISTANT]) {
@@ -94,7 +94,7 @@ if (emotionTally[EmotionCategory.AFFECTIONATE] > emotionTally[EmotionCategory.DI
     ratioC = emotionTally[EmotionCategory.AFFECTIONATE] / (emotionTally[EmotionCategory.DISTANT] + emotionTally[EmotionCategory.AFFECTIONATE]) * 100;
 } else {
     emotionC = 'D';
-    ratioC = emotionTally[EmotionCategory.DISTANT] / (emotionTally[EmotionCategory.AFFECTIONATE] + emotionTally[EmotionCategory.DISTANT]) * 100;
+    ratioC = emotionTally[EmotionCategory.AFFECTIONATE] / (emotionTally[EmotionCategory.AFFECTIONATE] + emotionTally[EmotionCategory.DISTANT]) * 100;
 }
 
 
