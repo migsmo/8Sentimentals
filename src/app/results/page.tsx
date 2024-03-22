@@ -191,15 +191,15 @@ export default function Results() {
           <Title style={{ fontSize: '10rem' }}>{finalEmotions}</Title>
         </div>
         <div>
-          <h2>{`happiness ${ratioA.toFixed(0)}% ${
-            100 - ratioA.toFixed(0)
-          }% sadness`}</h2>
-          <h2>{`excitement ${ratioB.toFixed(0)}% ${
-            100 - ratioB.toFixed(0)
-          }% boredom`}</h2>
-          <h2>{`affectionate ${ratioC.toFixed(0)}% ${
-            100 - ratioC.toFixed(0)
-          }% distant`}</h2>
+          <h2>{`happiness ${ratioA.toFixed(0)}% ${(
+            100 - parseFloat(ratioA.toFixed(0))
+          ).toString()}% sadness`}</h2>
+          <h2>{`excitement ${ratioB.toFixed(0)}% ${(
+            100 - parseFloat(ratioB.toFixed(0))
+          ).toString()}% boredom`}</h2>
+          <h2>{`affectionate ${ratioC.toFixed(0)}% ${(
+            100 - parseFloat(ratioC.toFixed(0))
+          ).toString()}% distant`}</h2>
         </div>
         <h1>{finalOutcome}</h1>
         <div style={{ marginTop: '2rem' }}></div>
