@@ -8,10 +8,16 @@ import { EmotionCategory } from '../../../enums/index';
 import { SurveyResponse } from '../../../interfaces';
 
 export default function Results() {
-  const surveyResponsesString = localStorage.getItem('surveyState');
-  const surveyResponses: SurveyResponse[] = JSON.parse(
-    surveyResponsesString || '{}'
-  ).responses;
+  const [surveyResponses, setSurveyResponses] = useState<SurveyResponse[]>([]);
+  useEffect(() => {
+    const surveyResponsesString = localStorage.getItem('surveyState');
+    const surveyResponsesParsed: SurveyResponse[] = JSON.parse(
+      surveyResponsesString || '{}'
+    ).responses;
+
+    setSurveyResponses(surveyResponsesParsed);
+  }, []);
+
   // Retrieve survey responses from localStorage
 
   const formattedResponses = surveyResponses.map(({ qId, answer }) => ({
