@@ -22,9 +22,12 @@ export default function Results() {
     [EmotionCategory.HAPPINESS]: 0,
   });
   const [isDoneInitializing, setIsDoneInitializing] = useState(false);
+  const [surveyGeneratedResult, setSurveyGeneratedResult] =
+    useState<string>('');
 
   useEffect(() => {
     const surveyResponsesString = localStorage.getItem('surveyState');
+
     const surveyResponsesParsed: SurveyResponse[] = JSON.parse(
       surveyResponsesString || '{}'
     ).responses;
@@ -171,6 +174,12 @@ export default function Results() {
       }
     }
 
+    const surveyGeneratedResult = localStorage.getItem('surveyGeneratedResult');
+    if (surveyGeneratedResult) {
+      setFinalOutcome(surveyGeneratedResult);
+      return;
+    }
+
     const aiPrompt = `Given an emotional tally of happiness: ${
       emotionTally[EmotionCategory.HAPPINESS]
     }, sadness: ${emotionTally[EmotionCategory.SADNESS]}, excitement: ${
@@ -196,6 +205,7 @@ export default function Results() {
         const data = await response.json();
 
         setFinalOutcome(data);
+        localStorage.setItem('surveyGeneratedResult', JSON.stringify(data));
       } catch (error) {
         console.error("Failed to fetch OpenAI's response:", error);
       }
