@@ -2,7 +2,6 @@
 import { Title } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import CenterContainer from '../../../components/yellow-container/yellow-container.component';
-import { finalOutcomes } from '../../../data/final-outcomes';
 import { SurveyQuestionsData } from '../../../data/survey-questions';
 import { EmotionCategory } from '../../../enums/index';
 import { SurveyResponse } from '../../../interfaces';
@@ -17,6 +16,7 @@ export default function Results() {
 
     setSurveyResponses(surveyResponsesParsed);
   }, []);
+  const [finalOutcome, setFinalOutcome] = useState('');
 
   // Retrieve survey responses from localStorage
 
@@ -84,7 +84,6 @@ export default function Results() {
   let ratioB = 0;
   let ratioC = 0;
   let finalEmotions = '';
-  let finalOutcome = '';
 
   if (
     emotionTally[EmotionCategory.HAPPINESS] >
@@ -143,45 +142,43 @@ export default function Results() {
       100;
   }
 
-  if (emotionA == 'H') {
-    if (emotionB == 'E') {
-      if (emotionC == 'A') {
-        finalOutcome = finalOutcomes[0];
-        finalEmotions = 'HEA';
-      } else if (emotionC == 'D') {
-        finalOutcome = finalOutcomes[1];
-        finalEmotions = 'HED';
-      }
-    } else if (emotionB == 'B') {
-      if (emotionC == 'A') {
-        finalOutcome = finalOutcomes[2];
-        finalEmotions = 'HBA';
-      } else if (emotionC == 'D') {
-        finalOutcome = finalOutcomes[3];
-        finalEmotions = 'HBD';
-      }
-    }
-  }
+  useEffect(() => {
+    // This effect runs after you have calculated the emotional tally
+    // Build the prompt based on the user's responses
+    const aiPrompt = `Given an emotional tally of happiness: ${
+      emotionTally[EmotionCategory.HAPPINESS]
+    }, sadness: ${emotionTally[EmotionCategory.SADNESS]}, excitement: ${
+      emotionTally[EmotionCategory.EXCITEMENT]
+    }, boredom: ${emotionTally[EmotionCategory.BOREDOM]}, affectionate: ${
+      emotionTally[EmotionCategory.AFFECTIONATE]
+    }, and distant: ${
+      emotionTally[EmotionCategory.DISTANT]
+    }, generate a personalized outcome.`;
 
-  if (emotionA == 'S') {
-    if (emotionB == 'E') {
-      if (emotionC == 'A') {
-        finalOutcome = finalOutcomes[4];
-        finalEmotions = 'SEA';
-      } else if (emotionC == 'D') {
-        finalOutcome = finalOutcomes[5];
-        finalEmotions = 'SED';
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/openai', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt: aiPrompt }),
+        });
+        console.log(response.status, response.statusText);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        // Use the AI-generated text as the final outcome
+        setFinalOutcome(data.choices[0].text);
+      } catch (error) {
+        console.log('Failed to fetch OpenAI response:', error);
+        console.error("Failed to fetch OpenAI's response:", error);
       }
-    } else if (emotionB == 'B') {
-      if (emotionC == 'A') {
-        finalOutcome = finalOutcomes[6];
-        finalEmotions = 'SBA';
-      } else if (emotionC == 'D') {
-        finalOutcome = finalOutcomes[7];
-        finalEmotions = 'SBD';
-      }
-    }
-  }
+    };
+
+    fetchData();
+  }, [emotionTally]);
 
   return (
     <CenterContainer>
